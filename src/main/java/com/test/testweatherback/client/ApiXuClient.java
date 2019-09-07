@@ -1,13 +1,15 @@
 package com.test.testweatherback.client;
 
+import com.test.testweatherback.client.response.apixu.ApiXuResponse;
 import com.test.testweatherback.client.response.darksky.DarkSkyResponse;
 import com.test.testweatherback.dto.Forecast;
 import com.test.testweatherback.dto.misc.GeographicLocation;
 import com.test.testweatherback.dto.request.ForecastRequest;
 import com.test.testweatherback.enumeration.ForecastSource;
-import com.test.testweatherback.mapper.DarkSkyForecastMapper;
+import com.test.testweatherback.mapper.ApiXuForecastMapper;
 import com.test.testweatherback.util.ApplicationConstants;
 import com.test.testweatherback.util.LocationTranslator;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -18,16 +20,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 @Component
-@ConfigurationProperties(prefix = "weather.api.dark-sky")
-public class DarkSkyClient extends GenericForecastClient<ForecastRequest, DarkSkyResponse, Forecast> {
+@ConfigurationProperties(prefix = "weather.api.apixu")
+public class ApiXuClient extends GenericForecastClient<ForecastRequest, ApiXuResponse, Forecast> {
 
-  private final DarkSkyForecastMapper mapper;
+  private final ApiXuForecastMapper mapper;
   private final LocationTranslator locationTranslator;
-
-  private ParameterizedTypeReference typeRef = new ParameterizedTypeReference<DarkSkyResponse>() {
+  private ParameterizedTypeReference typeRef = new ParameterizedTypeReference<ApiXuResponse>() {
   };
 
-  protected DarkSkyClient(RestTemplate restTemplate, DarkSkyForecastMapper mapper,
+  public ApiXuClient(RestTemplate restTemplate, ApiXuForecastMapper mapper,
       LocationTranslator locationTranslator) {
     super(restTemplate);
     this.mapper = mapper;
@@ -36,33 +37,33 @@ public class DarkSkyClient extends GenericForecastClient<ForecastRequest, DarkSk
 
   @Override
   public MultiValueMap<String, String> getQueryParams(ForecastRequest input) {
-    return new LinkedMultiValueMap<>();
-  }
-
-  @Override
-  public Map<String, String> getPathParams(ForecastRequest input) {
 
     GeographicLocation location = locationTranslator.getLocation(input.getCity());
 
-    return new HashMap<String, String>() {{
-      put("coordinates", String.format(ApplicationConstants.COORDINATES_PAIR_FORMAT,
-          location.getLatitude(), location.getLongitude()));
+    return new LinkedMultiValueMap<String, String>() {{
+      put("q", Collections.singletonList(
+          String.format(ApplicationConstants.COORDINATES_PAIR_FORMAT, location.getLatitude(),
+              location.getLongitude())));
     }};
   }
 
   @Override
-  public ParameterizedTypeReference<DarkSkyResponse> getTypeReference() {
+  public Map<String, String> getPathParams(ForecastRequest input) {
+    return Collections.emptyMap();
+  }
+
+  @Override
+  public ParameterizedTypeReference<ApiXuResponse> getTypeReference() {
     return this.typeRef;
   }
 
   @Override
-  public Forecast mapToResponse(DarkSkyResponse response, ForecastRequest request) {
-    return mapper.mapDarkSkyResponseToForecast(response, request.getUnit());
+  public Forecast mapToResponse(ApiXuResponse response, ForecastRequest request) {
+    return mapper.mapApiXuResponseToForecast(response, request.getUnit());
   }
 
   @Override
   public ForecastSource getSource() {
-    return ForecastSource.DARKSKY;
+    return ForecastSource.APIXU;
   }
-
 }

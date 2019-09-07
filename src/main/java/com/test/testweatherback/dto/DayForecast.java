@@ -1,5 +1,8 @@
 package com.test.testweatherback.dto;
 
+import lombok.Data;
+
+@Data
 public class DayForecast {
 
   private String day;

@@ -10,10 +10,12 @@ import com.test.testweatherback.exception.ForecastNotFoundException;
 import com.test.testweatherback.repository.ForecastRepository;
 import com.test.testweatherback.service.ForecastService;
 import com.test.testweatherback.util.ForecastUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class ForecastServiceImpl implements ForecastService {
 
   private final ForecastClientSelector selector;
@@ -36,17 +38,22 @@ public class ForecastServiceImpl implements ForecastService {
   }
 
   private Forecast getForecastFallback(ForecastRequest request) {
+
+    log.debug("Passing request to Fallback...");
+
     return repository.findById(
-        ForecastUtil.getForecastIdForToday(request.getSource(), request.getCity()))
+        ForecastUtil
+            .getForecastIdForToday(request.getSource(), request.getCity(), request.getUnit()))
         .orElseThrow(ForecastNotFoundException::new).getForecast();
   }
 
   @Async
-  private void saveForecast(Forecast forecast, ForecastRequest request) {
+  void saveForecast(Forecast forecast, ForecastRequest request) {
 
-    String databaseId = ForecastUtil.getForecastIdForToday(request.getSource(), request.getCity());
+    String databaseId = ForecastUtil
+        .getForecastIdForToday(request.getSource(), request.getCity(), request.getUnit());
 
-    if(!repository.findById(databaseId).isPresent()) {
+    if (!repository.findById(databaseId).isPresent()) {
       ForecastWrapper wrapper = new ForecastWrapper(databaseId, forecast);
       repository.insert(wrapper);
     }

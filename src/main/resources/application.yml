@@ -4,18 +4,109 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://admintest:12345@localhost:27017/weather-forecast
+      uri: mongodb://admintest:12345@localhost:27017/forecast
+
+api:
+  web:
+    keystore: "classpath:certs/keystore.jks"
+    keystorePassword: changeme
 
 weather:
   api:
     dark-sky:
       method: GET
-      url: https://api.darksky.net/forecast/34d762de5fb59e1f05ea4492c4a0ad1f/37.8267,-122.4233
+      url: https://api.darksky.net/forecast/{apiKey}/{coordinates}
+      pathParams:
+        apiKey: "34d762de5fb59e1f05ea4492c4a0ad1f"
       headers:
         Accept-Encoding: "gzip, deflate"
         Accept: "application/json"
         Content-Type: "application/json"
+    apixu:
+      method: GET
+      url: https://api.apixu.com/v1/forecast.json
+      queryParams:
+        key: "e07b90d8076641bdb43200044190709"
+        days: 7
+      headers:
+        Accept-Encoding: "gzip, deflate"
+        Accept: "application/json"
+        Content-Type: "application/json"
+  location:
+    coordinates:
+        BOGOTA:
+          latitude: "4.60971"
+          longitude: "-74.081749"
+        NEW_YORK:
+          latitude: "43.000351"
+          longitude: "-75.499901"
+        SAO_PAULO:
+          latitude: "-23.547501"
+          longitude: "-46.636108"
+  icons:
+    relations:
+      DARK_SKY:
+        "clear-day": "SUNNY"
+        "clear-night": "SUNNY"
+        "rain": "RAINY"
+        "snow": "SNOWY"
+        "sleet": "SNOWY"
+        "wind": "WINDY"
+        "fog": "FOGGY"
+        "cloudy": "CLOUDY"
+        "partly-cloudy-day": "CLOUDY"
+        "partly-cloudy-night": "CLOUDY"
+      APIXU:
+        "1000": "SUNNY"
+        "1003": "CLOUDY"
+        "1006": "CLOUDY"
+        "1009": "FOGGY"
+        "1030": "FOGGY"
+        "1063": "RAINY"
+        "1066": "SNOWY"
+        "1069": "SNOWY"
+        "1072": "SNOWY"
+        "1087": "THUNDERY"
+        "1114": "SNOWY"
+        "1117": "SNOWY"
+        "1135": "FOGGY"
+        "1147": "FOGGY"
+        "1150": "RAINY"
+        "1153": "RAINY"
+        "1168": "RAINY"
+        "1171": "RAINY"
+        "1180": "RAINY"
+        "1183": "RAINY"
+        "1186": "RAINY"
+        "1189": "RAINY"
+        "1192": "RAINY"
+        "1195": "RAINY"
+        "1198": "RAINY"
+        "1201": "RAINY"
+        "1204": "SNOWY"
+        "1207": "SNOWY"
+        "1210": "SNOWY"
+        "1213": "SNOWY"
+        "1216": "SNOWY"
+        "1219": "SNOWY"
+        "1222": "SNOWY"
+        "1225": "SNOWY"
+        "1237": "SNOWY"
+        "1240": "RAINY"
+        "1243": "RAINY"
+        "1246": "RAINY"
+        "1249": "SNOWY"
+        "1252": "SNOWY"
+        "1255": "SNOWY"
+        "1258": "SNOWY"
+        "1261": "SNOWY"
+        "1264": "SNOWY"
+        "1273": "RAINY"
+        "1276": "RAINY"
+        "1279": "SNOWY"
+        "1282": "SNOWY"
 
 logging:
   level:
     root: INFO
+    com.test: DEBUG

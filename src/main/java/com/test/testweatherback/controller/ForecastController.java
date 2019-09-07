@@ -29,9 +29,9 @@ public class ForecastController {
 
   @ModelAttribute()
   private ForecastRequest forecastRequest(
-      @RequestParam(name ="source") ForecastSource source,
-      @RequestParam(name ="city") City  city,
-      @RequestParam(name ="unit") TemperatureUnit unit) {
+      @RequestParam(name = "source") ForecastSource source,
+      @RequestParam(name = "city") City city,
+      @RequestParam(name = "unit") TemperatureUnit unit) {
     return new ForecastRequest(source, city, unit);
   }
 

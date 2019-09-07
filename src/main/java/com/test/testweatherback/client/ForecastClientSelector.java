@@ -22,8 +22,8 @@ public class ForecastClientSelector {
 
   public Forecast getForecast(ForecastRequest request) {
 
-    if(clients.containsKey(request.getSource())) {
-      return clients.get(request.getSource()).executeHttpRequest(request);
+    if (clients.containsKey(request.getSource())) {
+      return (Forecast) clients.get(request.getSource()).executeHttpRequest(request);
     } else {
       throw new ForecastSourceNotFound();
     }

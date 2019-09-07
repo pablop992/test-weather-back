@@ -9,8 +9,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 @EnableCircuitBreaker
 public class TestWeatherBackApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TestWeatherBackApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(TestWeatherBackApplication.class, args);
+  }
 
 }
