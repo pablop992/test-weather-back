@@ -1,0 +1,21 @@
+server:
+  port: 10000
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://admintest:12345@localhost:27017/weather-forecast
+
+weather:
+  api:
+    dark-sky:
+      method: GET
+      url: https://api.darksky.net/forecast/34d762de5fb59e1f05ea4492c4a0ad1f/37.8267,-122.4233
+      headers:
+        Accept-Encoding: "gzip, deflate"
+        Accept: "application/json"
+        Content-Type: "application/json"
+
+logging:
+  level:
+    root: INFO
