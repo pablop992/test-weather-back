@@ -8,10 +8,12 @@ import com.test.testweatherback.dto.DayForecast;
 import com.test.testweatherback.dto.Forecast;
 import com.test.testweatherback.enumeration.ForecastSource;
 import com.test.testweatherback.enumeration.TemperatureUnit;
+import com.test.testweatherback.exception.EmptyForecastException;
 import com.test.testweatherback.util.ForecastUtil;
 import com.test.testweatherback.util.IconTranslator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,6 +26,12 @@ public class DarkSkyForecastMapper {
   }
 
   public Forecast mapDarkSkyResponseToForecast(DarkSkyResponse source, TemperatureUnit unit) {
+
+    if(Objects.isNull(source) || Objects.isNull(source.getDaily())
+        || Objects.isNull(source.getDaily().getData())
+        || source.getDaily().getData().isEmpty()) {
+      throw new EmptyForecastException();
+    }
 
     Forecast toReturn = new Forecast();
     toReturn.setTodayForecast(mapDayForecast(source.getDaily().getData().get(0), unit));

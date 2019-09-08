@@ -11,10 +11,12 @@ import com.test.testweatherback.dto.DayForecast;
 import com.test.testweatherback.dto.Forecast;
 import com.test.testweatherback.enumeration.ForecastSource;
 import com.test.testweatherback.enumeration.TemperatureUnit;
+import com.test.testweatherback.exception.EmptyForecastException;
 import com.test.testweatherback.util.ForecastUtil;
 import com.test.testweatherback.util.IconTranslator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,7 +30,15 @@ public class ApiXuForecastMapper {
 
   public Forecast mapApiXuResponseToForecast(ApiXuResponse source, TemperatureUnit unit) {
 
+    if(Objects.isNull(source) || Objects.isNull(source.getForecast())
+        || Objects.isNull(source.getForecast().getForecastDay())
+        || source.getForecast().getForecastDay().isEmpty()) {
+      throw new EmptyForecastException();
+    }
+
     Forecast toReturn = new Forecast();
+
+
     toReturn.setTodayForecast(mapDayForecast(source.getForecast().getForecastDay().get(0), unit));
 
     List<DayForecast> nextDayForecast = new ArrayList<>(source.getForecast().getForecastDay().size() - 1);

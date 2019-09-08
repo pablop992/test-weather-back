@@ -9,9 +9,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ForecastUtil {
 
   private static final String FORECAST_ID_DF = "ddMMyyyy";
@@ -45,14 +48,6 @@ public class ForecastUtil {
 
   public static Double fahrenheitToCelsius(Double temperature) {
     return ((temperature - 32.0) * 5.0) / 9;
-  }
-
-  public static Double kelvinToFahrenheit(Double temperature) {
-    return ((temperature * 9) / 5) - 459.67;
-  }
-
-  public static Double kelvinToCelsius(Double temperature) {
-    return temperature - 273.15;
   }
 
 }
