@@ -1,6 +1,7 @@
 package com.test.testweatherback.client.response.apixu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.Valid;
 import lombok.Data;
 
 @Data
@@ -18,6 +19,7 @@ public class ApiXuDay {
   @JsonProperty("mintemp_f")
   private Double minTempFahrenheit;
 
+  @Valid
   private ApiXuCondition condition;
 
 }

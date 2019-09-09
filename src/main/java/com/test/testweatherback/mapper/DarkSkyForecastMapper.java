@@ -8,7 +8,7 @@ import com.test.testweatherback.dto.DayForecast;
 import com.test.testweatherback.dto.Forecast;
 import com.test.testweatherback.enumeration.ForecastSource;
 import com.test.testweatherback.enumeration.TemperatureUnit;
-import com.test.testweatherback.exception.EmptyForecastException;
+import com.test.testweatherback.exception.InvalidForecastResponseException;
 import com.test.testweatherback.util.ForecastUtil;
 import com.test.testweatherback.util.IconTranslator;
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 
-@Component
-public class DarkSkyForecastMapper {
+@Component("darkSkyMapper")
+public class DarkSkyForecastMapper implements GenericForecastMapper<DarkSkyResponse, Forecast> {
 
   private final IconTranslator iconTranslator;
 
@@ -25,12 +25,12 @@ public class DarkSkyForecastMapper {
     this.iconTranslator = iconTranslator;
   }
 
-  public Forecast mapDarkSkyResponseToForecast(DarkSkyResponse source, TemperatureUnit unit) {
+  public Forecast mapSourceResponse(DarkSkyResponse source, TemperatureUnit unit) {
 
     if(Objects.isNull(source) || Objects.isNull(source.getDaily())
         || Objects.isNull(source.getDaily().getData())
         || source.getDaily().getData().isEmpty()) {
-      throw new EmptyForecastException();
+      throw new InvalidForecastResponseException();
     }
 
     Forecast toReturn = new Forecast();
@@ -47,7 +47,12 @@ public class DarkSkyForecastMapper {
     return toReturn;
   }
 
-  public DayForecast mapDayForecast(DarkSkyForecastItem source, TemperatureUnit unit) {
+  private DayForecast mapDayForecast(DarkSkyForecastItem source, TemperatureUnit unit) {
+
+    if(!ForecastUtil.isValidObject(source)) {
+      throw new InvalidForecastResponseException();
+    }
+
     DayForecast dayForecast = new DayForecast();
     dayForecast.setDay(ForecastUtil.extractDayOfWeekFromEpochTime(source.getTime()));
     dayForecast.setIcon(iconTranslator.getIconId(ForecastSource.DARKSKY, source.getIcon()));

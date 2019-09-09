@@ -47,11 +47,10 @@ public abstract class GenericForecastClient<Rq, Rs, Out> {
           entity,
           getTypeReference()).getBody();
     } catch (RestClientException rce) {
-      rce.printStackTrace();
       throw new ForecastNotFoundException();
     }
 
-    log.info("Sucessfull Forecast retrieve");
+    log.debug("Sucessfull Forecast retrieve");
 
     return mapToResponse(response, input);
   }

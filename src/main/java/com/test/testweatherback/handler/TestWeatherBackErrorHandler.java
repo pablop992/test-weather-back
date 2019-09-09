@@ -5,6 +5,7 @@ import com.test.testweatherback.exception.CoordinatesNotFoundException;
 import com.test.testweatherback.exception.EmptyForecastException;
 import com.test.testweatherback.exception.ForecastNotFoundException;
 import com.test.testweatherback.exception.ForecastSourceNotFound;
+import com.test.testweatherback.exception.InvalidForecastResponseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Component
 public class TestWeatherBackErrorHandler {
 
-  @ExceptionHandler({ForecastNotFoundException.class, EmptyForecastException.class})
+  @ExceptionHandler({ForecastNotFoundException.class, InvalidForecastResponseException.class})
   public ResponseEntity handleForecastNotFound() {
     return ResponseEntity.notFound().build();
   }

@@ -16,6 +16,7 @@ import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @ConfigurationProperties(prefix = "api.web")
 @Setter
+@Profile("!test")
 public class RestConfig {
 
   private String keystore;
@@ -37,7 +39,6 @@ public class RestConfig {
         .create()
         .loadKeyMaterial(ResourceUtils.getFile(this.keystore),
             this.keystorePassword.toCharArray(), this.keystorePassword.toCharArray())
-
         .loadTrustMaterial(null, acceptingTrustStrategy)
         .build();
     HttpClient client = HttpClients.custom()

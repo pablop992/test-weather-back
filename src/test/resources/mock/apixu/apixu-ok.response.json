@@ -1,0 +1,97 @@
+{
+  "forecast": {
+    "forecastday": [
+      {
+        "date_epoch": 1567900800,
+        "day": {
+          "maxtemp_c": 22.0,
+          "maxtemp_f": 71.6,
+          "mintemp_c": 9.8,
+          "mintemp_f": 49.6,
+          "condition": {
+            "text": "Patchy rain possible",
+            "code": 1063
+          }
+        }
+      },
+      {
+        "date_epoch": 1567987200,
+        "day": {
+          "maxtemp_c": 21.4,
+          "maxtemp_f": 70.5,
+          "mintemp_c": 9.7,
+          "mintemp_f": 49.5,
+          "condition": {
+            "text": "Heavy rain at times",
+            "code": 1192
+          }
+        }
+      },
+      {
+        "date_epoch": 1568073600,
+        "day": {
+          "maxtemp_c": 22.4,
+          "maxtemp_f": 72.3,
+          "mintemp_c": 11.1,
+          "mintemp_f": 52.0,
+          "condition": {
+            "text": "Moderate or heavy rain shower",
+            "code": 1243
+          }
+        }
+      },
+      {
+        "date_epoch": 1568160000,
+        "day": {
+          "maxtemp_c": 22.0,
+          "maxtemp_f": 71.6,
+          "mintemp_c": 11.8,
+          "mintemp_f": 53.2,
+          "condition": {
+            "text": "Moderate or heavy rain shower",
+            "code": 1243
+          }
+        }
+      },
+      {
+        "date_epoch": 1568246400,
+        "day": {
+          "maxtemp_c": 20.5,
+          "maxtemp_f": 68.9,
+          "mintemp_c": 10.6,
+          "mintemp_f": 51.1,
+          "condition": {
+            "text": "Moderate or heavy rain shower",
+            "code": 1243
+          }
+        }
+      },
+      {
+        "date_epoch": 1568332800,
+        "day": {
+          "maxtemp_c": 20.4,
+          "maxtemp_f": 68.7,
+          "mintemp_c": 10.8,
+          "mintemp_f": 51.4,
+          "condition": {
+            "text": "Patchy rain possible",
+            "code": 1063
+          }
+        }
+      },
+      {
+        "date_epoch": 1568419200,
+        "day": {
+          "maxtemp_c": 18.9,
+          "maxtemp_f": 66.0,
+          "mintemp_c": 11.0,
+          "mintemp_f": 51.8,
+          "condition": {
+            "text": "Patchy rain possible",
+            "code": 1063
+          }
+        }
+      }
+    ]
+  }
+}

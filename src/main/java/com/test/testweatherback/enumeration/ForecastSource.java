@@ -9,7 +9,9 @@ import lombok.Getter;
 public enum ForecastSource {
 
   DARKSKY(1),
-  APIXU(2);
+  APIXU(2),
+  //Only for test purposes, do not use it!!
+  UNKNOWN(0);
 
   private Integer id;
 

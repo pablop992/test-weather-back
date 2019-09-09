@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,8 @@ public class ForecastUtil {
   private static final DateFormat DAY_OF_WEEK_FORMAT = new SimpleDateFormat("EEEE", Locale.ENGLISH);
   private static final String FORECAST_ID_SEPARATOR = "-";
   private static final Long EPOCH_TO_MILLIS_MULTIPLICATOR = 1000l;
+
+  private static final Validator BEAN_VALIDATOR = Validation.buildDefaultValidatorFactory().getValidator();
 
   public static String getForecastIdForToday(ForecastSource source, City city,
       TemperatureUnit unit) {
@@ -36,6 +40,12 @@ public class ForecastUtil {
     builder.append(LocalDate.now().format(DateTimeFormatter.ofPattern(FORECAST_ID_DF)));
 
     return builder.toString();
+
+  }
+
+  public static boolean isValidObject(Object obj) {
+
+    return BEAN_VALIDATOR.validate(obj).isEmpty() ? Boolean.TRUE : Boolean.FALSE;
 
   }
 

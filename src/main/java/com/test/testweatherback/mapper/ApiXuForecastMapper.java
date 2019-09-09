@@ -2,6 +2,7 @@ package com.test.testweatherback.mapper;
 
 import static com.test.testweatherback.util.ApplicationConstants.TEMPERATURE_FORMAT;
 
+import com.test.testweatherback.client.GenericForecastClient;
 import com.test.testweatherback.client.response.apixu.ApiXuDayForecast;
 import com.test.testweatherback.client.response.apixu.ApiXuForecast;
 import com.test.testweatherback.client.response.apixu.ApiXuResponse;
@@ -12,6 +13,7 @@ import com.test.testweatherback.dto.Forecast;
 import com.test.testweatherback.enumeration.ForecastSource;
 import com.test.testweatherback.enumeration.TemperatureUnit;
 import com.test.testweatherback.exception.EmptyForecastException;
+import com.test.testweatherback.exception.InvalidForecastResponseException;
 import com.test.testweatherback.util.ForecastUtil;
 import com.test.testweatherback.util.IconTranslator;
 import java.util.ArrayList;
@@ -19,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ApiXuForecastMapper {
+@Component("apiXuMapper")
+public class ApiXuForecastMapper implements GenericForecastMapper<ApiXuResponse, Forecast> {
 
   private final IconTranslator iconTranslator;
 
@@ -28,16 +30,15 @@ public class ApiXuForecastMapper {
     this.iconTranslator = iconTranslator;
   }
 
-  public Forecast mapApiXuResponseToForecast(ApiXuResponse source, TemperatureUnit unit) {
+  public Forecast mapSourceResponse(ApiXuResponse source, TemperatureUnit unit) {
 
     if(Objects.isNull(source) || Objects.isNull(source.getForecast())
         || Objects.isNull(source.getForecast().getForecastDay())
         || source.getForecast().getForecastDay().isEmpty()) {
-      throw new EmptyForecastException();
+      throw new InvalidForecastResponseException();
     }
 
     Forecast toReturn = new Forecast();
-
 
     toReturn.setTodayForecast(mapDayForecast(source.getForecast().getForecastDay().get(0), unit));
 
@@ -53,6 +54,11 @@ public class ApiXuForecastMapper {
   }
 
   public DayForecast mapDayForecast(ApiXuDayForecast source, TemperatureUnit unit) {
+
+    if(!ForecastUtil.isValidObject(source)) {
+      throw new InvalidForecastResponseException();
+    }
+
     DayForecast dayForecast = new DayForecast();
     dayForecast.setDay(ForecastUtil.extractDayOfWeekFromEpochTime(source.getDateEpoch()));
     dayForecast.setIcon(iconTranslator.getIconId(ForecastSource.APIXU, source.getDay().getCondition().getCode()));

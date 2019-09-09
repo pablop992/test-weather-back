@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://${MONGO_USER:admintest}:${MONGO_PASS:12345}@${MONGO_HOST:127.0.0.1}:${MONGO_PORT:27017}/forecast
+      uri: mongodb://localhost:27018/forecast
 
 api:
   web:
@@ -15,18 +15,18 @@ weather:
   api:
     dark-sky:
       method: GET
-      url: https://api.darksky.net/forecast/{apiKey}/{coordinates}
+      url: http://localhost:8080/darksky/forecast
       pathParams:
-        apiKey: "34d762de5fb59e1f05ea4492c4a0ad1f"
+        apiKey: "testApiKey"
       headers:
         Accept-Encoding: "gzip, deflate"
         Accept: "application/json"
         Content-Type: "application/json"
     apixu:
       method: GET
-      url: https://api.apixu.com/v1/forecast.json
+      url: http://localhost:8080/apixu/forecast
       queryParams:
-        key: "e07b90d8076641bdb43200044190709"
+        key: "testApiKey"
         days: 7
       headers:
         Accept-Encoding: "gzip, deflate"

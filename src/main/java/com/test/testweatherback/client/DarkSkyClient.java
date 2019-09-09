@@ -6,10 +6,12 @@ import com.test.testweatherback.dto.misc.GeographicLocation;
 import com.test.testweatherback.dto.request.ForecastRequest;
 import com.test.testweatherback.enumeration.ForecastSource;
 import com.test.testweatherback.mapper.DarkSkyForecastMapper;
+import com.test.testweatherback.mapper.GenericForecastMapper;
 import com.test.testweatherback.util.ApplicationConstants;
 import com.test.testweatherback.util.LocationTranslator;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -21,13 +23,14 @@ import org.springframework.web.client.RestTemplate;
 @ConfigurationProperties(prefix = "weather.api.dark-sky")
 public class DarkSkyClient extends GenericForecastClient<ForecastRequest, DarkSkyResponse, Forecast> {
 
-  private final DarkSkyForecastMapper mapper;
+  private final GenericForecastMapper mapper;
   private final LocationTranslator locationTranslator;
 
   private ParameterizedTypeReference typeRef = new ParameterizedTypeReference<DarkSkyResponse>() {
   };
 
-  protected DarkSkyClient(RestTemplate restTemplate, DarkSkyForecastMapper mapper,
+  protected DarkSkyClient(RestTemplate restTemplate,
+      @Qualifier("darkSkyMapper") GenericForecastMapper mapper,
       LocationTranslator locationTranslator) {
     super(restTemplate);
     this.mapper = mapper;
@@ -57,7 +60,7 @@ public class DarkSkyClient extends GenericForecastClient<ForecastRequest, DarkSk
 
   @Override
   public Forecast mapToResponse(DarkSkyResponse response, ForecastRequest request) {
-    return mapper.mapDarkSkyResponseToForecast(response, request.getUnit());
+    return (Forecast) mapper.mapSourceResponse(response, request.getUnit());
   }
 
   @Override
