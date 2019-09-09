@@ -29,7 +29,7 @@ public class ForecastServiceImpl implements ForecastService {
 
   @Override
   @HystrixCommand(fallbackMethod = "getForecastFallback", commandProperties = {
-      @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "100000000")
+      @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
   })
   public Forecast getForecast(ForecastRequest request) {
     Forecast toReturn = selector.getForecast(request);
